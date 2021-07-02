@@ -1,0 +1,785 @@
+
+%Carlos Chamizo Cano
+%
+%% Indice
+% Introduccion					
+% Declaracion de la funcion a trozos			
+% Representacion grafica de la funcion 			
+% Estudio de la funcion					
+% 	-Evaluacion de la funcion numerica en distintos puntos
+% 	-Dominio y recorrido 				
+% 	-Invertivilidad					
+% 	-limites 					
+% 		*limites en el infinito			
+% 		*limites en un punto,representacion grafica y comprobacion de la existencia 
+% 		del limite
+% 	-Asintotas					
+% 		*asintotas horizontales			
+% 		*asÃ­ntotas oblicuas			
+% 		*asintotas verticales			
+% 	-simetria					
+% 	-raices						
+% 		*grafica de las raices			
+% 		*mostrar las x en las que la funcion vale 0
+% 		*signo					
+% 	-primera derivada				
+% 		*mostrar puntos criticos		
+% 		*monotonia				
+% 	-segunda derivada				
+% 		*mostrar puntos criticos		
+% 		*maximos y minimos			
+% 		*curvatura				
+% 	-tercera derivada				
+% 		*puntos de inflexion			
+% Apartados Extra 					
+% 	-recta tangente en un puntos			
+% 	-calculo del area entre la funcion y otra que se decida
+% 		*determinar los puntos de interseccion	
+% 		*mostrar puntos de interseccion		
+% 		*calculo simbolico del area entre las 2 curvas
+% 		*representacion grafica del area 	
+% 		entre las 2 funciones
+% ////////////////////////////////////////////////////////////
+% 	APARTADO CREATIVO				
+% ////////////////////////////////////////////////////////////
+%% Introduccion:
+%       la funcion que he escogido es una funcion a trozos, el
+%  nucleo de esta es la funcion que representa el logo de uno de mis grupos
+%  favoritos, los Artic Monkeys, (en el apartado creativo esto se ve
+%  representado). el resto de la funcion a trozos la  he escogido con mucha
+%  precision pensando en los posibles aparteados.
+%
+%  Hago uso de 2 funciones propias que se explicaran cuando se haga uso por
+%  primera vez de estas y en la propia funcion.
+%
+%  la mayor parte de esta practica es extrapolable a cualquier funcion,
+%  pero ciertas partes estan pensadas para cubrir las peculiaridades de la
+%  funcion a trozos.
+%
+%  MUY IMPORTANTE EJECUTAR LOS APARTADOS EN ORDEN!!!
+%
+%  Disfruten de la pracctica.
+%% Declaracion de la funcion a trozos
+clear,close all
+syms x real
+x2=(x-0.91303);
+%ecuaciones por parametros
+eq1=(sin(x)*sin(20*x));
+eq2=2.76468681448776+(-10*(exp(-((x2+7.5)^2)/(2*(-1.3)^2)))+(1/(x2/10)));
+eq3=((1/x)*sin(3*x)^2);
+eq4=(x-pi*2)^2+(sqrt((x-pi*2)^3))/(x-9);
+%ensamblado en una sola funcion
+f(x) = piecewise(pi>=x>=-pi,eq1    ,x<-pi,eq2,  pi<x<=2*pi ,eq3   ,x>2*pi,eq4 );
+clear x2;
+%% Representacion grafica de la funcion 
+close all
+a=[-20,10];
+fplot(f,a,'b');
+title('f(x): ');
+grid on
+hold off
+clear a;
+%% Estudio de la funcion
+%% Evaluacion de la funcion numerica en distintos punto
+%un punto en la funcion definida en x<-pi
+disp(f(-5))
+%un punto entre eq1 y eq2 en x= -pi
+disp(f(-pi))
+%un punto en la funcion definida entre pi>=x>=-pi
+disp(f(0))
+%un punto entre eq2 y eq3 en x= pi
+disp(f(pi))
+%un punto en la funcion definida en x>pi
+disp(f(5))
+%% Dominio y recorrido 
+%dominio -> 
+    %2.76468681448776+(-10*(exp(-((x2+7.5)^2)/(2*(-1.3)^2)))+(1/(x2/10)))
+    %si x < -pi
+    %existe en todos los reales menos en 0, sin embargo esta funcion no
+    %abarca esa region   
+    %(sin(x)*sin(20*x)) si -pi < x <pi
+    %existe en todos sus valores
+    %((1/x)*sin(3*x)^2) si pi <= x <= 2*pi
+    %existe en todos los reales menos en 0, pero la funcion no abarca esta
+    %region.
+    %(x-pi*2)^2+(sqrt((x-pi*2)^3))/(x-9) si x > 2*pi
+    %existe en todos los puntos desde pi*2 (ya que al estar elevado a 3/2, los valoeres menores a 2*pi darian negativo en la raiz cuadrada)
+    %hasta infinito, excluyendo x=9 al hacer 0 en el denominador.
+   %dominio = (-INF,-pi)U[-pi,pi]U(pi,pi*2]U(pi*2,9)U(9,INF)
+   %        = (-INF,9)U(9,INF)
+%recorrido -> 
+%       este es todos los valores que tienen imagen de la funcion
+%
+%       recorrido = (-INF,1)U[20.6,INF)
+%
+%% Invertivilidad
+%en su conjunto, se deduce que no son inversibles ya que no cumple con los
+%requisitos de ser inyectiva sobreyectiva ni biyectiva
+%inversa de las funciones de cada parametro
+inv1=finverse(eq1);
+inv2=finverse(eq2);
+inv3=finverse(eq3);
+inv4=finverse(eq4);
+disp(inv1);
+disp(inv2);
+disp(inv3);
+disp(inv4);
+%inversa de f(x)
+invf=finverse(f);
+disp(invf);
+clear inv1 inv2 inv3 inv4 invf;
+%% Limites 
+%% Limites en el infinito
+disp('limite cuando f tiende a -infinito: ')
+L1=double(limit(f,x, -inf)); % límite de f en -infinito, como función de la variable x
+disp(L1);
+disp('limite cuando f tiende a infinito: ')
+L2=limit(f,x, inf); % límite de f en infinito, como función de la variable x
+disp(L2);
+clear L1 L2;
+%% Limites en un punto, representacion grafica y comprobacion de la
+%existencia de un limite
+close all
+x_0=-99; % punto donde se calcula el límite, cualquier punto es valido siempre y cuando tenga imagen
+%para facilitar el proceso he separado la funcion por parametros en sus
+%respectivas funciones
+if x_0<-pi
+    fL= eq2;
+elseif x_0==-pi||x_0==pi||x_0==2*pi
+    fL =  f;
+elseif -pi <x_0&& x_0< pi
+    fL= eq1;
+elseif pi<x_0 && x_0<(pi*2)
+    fL=eq3;
+elseif x_0 > (pi*2)
+    fL=eq4;
+end
+L=limit(fL,x,x_0);% límite en x_0
+%solo se representa el limite si no es NaN es decir infinito o no existe imagen
+if  isnan(L) == 0     
+    epsilon=1.e-5; % fijado un valor de epsilon (máxima distancia entre f(x) y L)
+%%en el caso de que sea el punto de union entre 2 funciones, debido a que
+%%matlab complica su calculo numerico, se mirará en la funcion conjunta y
+%%de pintará con una marca el limite
+if x_0==-pi||x_0==pi||x_0==2*pi
+    figure
+    fplot(fL,[x_0-0.1,x_0+0.1])
+    hold on
+    plot (x_0,subs(fL,x_0),'*')
+    hold off
+else
+    %en el caso de que sea un punto entre 2 funciones, se demostrara
+    %graficamente la existencia de limite
+
+    g=abs(fL-L); % distancia entre f y L
+    h=g-epsilon; % distancia entre f y L menos epsilon
+    h_n=matlabFunction(h);
+    semilla=x_0;
+    sol=fzero(h_n,semilla); % extremos del subintervalo del dominio tal que los valores f(x)
+    % distan menos que epsilon del valor límite L
+    delta_eps=abs(sol-x_0); % delta real
+    delta=delta_eps;
+    cota_inf=0.*x+L-epsilon; % recta y= L+epsilon
+    cota_sup=0.*x+L+epsilon; %recta y= L-epsilon
+    ventana=[x_0-3*delta,x_0+3*delta];%entorno de radio 3*delta para la gráfica
+    cota_inf_n=L-epsilon ;
+    cota_sup_n=L+epsilon;
+    cota_inf_n2=@(x) 0*x+cota_inf_n;
+    cota_sup_n2=@(x) 0*x+cota_sup_n;
+    I=linspace(x_0-delta,x_0+delta,100);
+    figure
+    ezplot(fL,ventana) % gráfica de la función distancia entre f(x) y el límite L 
+    hold on
+    plot(I,cota_inf_n2(I),'k')
+    hold on
+    plot(I,cota_sup_n2(I),'k')
+    hold on 
+    plot (x_0,subs(f,x,x_0),'k*')
+    hold on
+    plot([x_0-delta x_0-delta], [cota_inf_n cota_sup_n],'k.-')
+    hold on
+    plot([x_0+delta x_0+delta], [cota_inf cota_sup],'k.-')
+    xlabel('entorno')
+    ylabel('f(x)')
+    title('Demostración de la existencia del límite')
+    hold off
+end
+end
+clear x_0 ventana valor  V sol semilla LR L LL h_n h fL epsilon cota_este cota_inf cota_oeste I g entorno eje_x delta_eps delta cota_sup_n2 cota_sup_n cota_sup cota_inf_n2 cota_inf_n;
+%% Asintotas
+%% Asintotas horizontales
+close  all
+clc
+%se calculan los limites en el infinito
+L1 = limit(f(x),x,inf); 
+L2 = limit(f(x),x,-inf);
+%en el caso de valer infinito o menos infinito, supondra que no existen
+%asintotas horizontales
+disp('////////////////// respuesta //////////////////')
+fprintf('\n')
+if L1 == Inf || L1 == -Inf
+    disp('no hay asintotas horizontares por la derecha')
+else 
+    disp('hay una asintota horixontal a la derecha en : ')
+    disp(eval(L1))
+end
+fprintf('\n')
+if L2 == Inf || L2 == -Inf
+    disp('no hay asintotas horizontares por la izquierda')
+else 
+    disp('hay una asintota horizontal a la izquierda en : ')
+  disp(eval(L2))
+end
+clear L2 L1;
+%% Asíntotas oblicuas
+close  all
+clc
+%asintotas oblicuas (derecha)
+m1 = limit(f(x)/x, x, inf); %si m1 es real existe asintota oblicua por la derecha
+%m1 es la pendiente de la asintota oblicua.
+n1 = limit(f(x)-m1*x, x, inf); %n1 es la ordenada en el origen de la asintota obicua por la derecha   
+%asintotas oblicuas (izquierda)
+m2 = limit(f(x)/x, x, -inf); %existe asi­ntota oblicua por la izquierda si m1 es real
+%El valor m2 es la pendiente de la asintota oblicua.
+n2 = limit(f(x)-m2*x, x, -inf); %n1 es la ordenada en el origen de la asintota obicua por la izquierda.
+disp('////////////////// respuesta //////////////////')
+fprintf('\n')
+%si la pendiente es 0 o tiende a infinito, no hay asintota oblicua por la
+%derecha
+if m1 ==0  || m1 == Inf || m1 == -Inf
+    disp('no hay asintota oblicua por la derecha')
+else
+    disp('hay una asintota oblicua por la derecha en ')
+    y = m1*x+n1;
+    disp(y)
+end
+fprintf('\n')
+%si la pendiente es 0 o tiende a infinito, no hay asintota oblicua por la
+%izquierda
+if m2 ==0 || m2 == Inf || m2 == -Inf
+    disp('no hay asintota oblicua por la izquierda')
+else 
+    disp('hay una asintota oblicua por la izquierda en ')
+    y = m2*x+n2;
+    disp(y)
+end
+%representacion gráfica
+figure
+fplot(f,[-20,10])
+hold on
+v=[-20,20]; plot(v, m1*v+n1, 'r--')
+hold on
+w=[-20,20]; plot(w, m2*v+n2, 'r--')
+hold off
+clear y w v raices_den num n2 n1 m2 m1 L3_izq L3_derch AsV1 den ans;
+%% Asintotas verticales
+close all;
+[num,den] = numden(f(x));%se separa el numerador del denominador
+raices_den = solve(den);%se buscan las raices del denominador
+L3_derch = limit(f(x),x,raices_den(1), 'right'); %existe asintota vertical por la derecha si L3_derch es infinito o -infinito
+L3_izq = limit(f(x),x,raices_den(1), 'left'); %existe asintota vertical por la izquierda si L3_Izq es infinito o -infinito
+AsV1 = double(raices_den(1)); % convertimos las variables simbolicas en numericas
+%representacon grafica
+fplot(f(x), [-10,20])
+hold on;
+axis([0, 15, -20, 100])
+hold off
+disp('////////////////// respuesta //////////////////')
+fprintf('\n')
+if L3_derch ==Inf||L3_derch ==-Inf||L3_izq ==Inf||L3_izq ==-Inf    
+disp('existe una asintotas vertical de ecuaciones:')
+disp(['x = ', num2str(AsV1) ])
+else 
+    disp('no hay asintotas verticales')
+end
+clear y w v raices_den num n2 n1 m2 m1 L3_izq L3_derch AsV1 den ans;
+%% Simetria
+close all
+f2=f(-x); %definicion para ver la simetria par
+fplot(f2)
+hold on
+fplot(f)
+disp('////////////////// respuesta //////////////////');
+disp('comcluimos que solo tiene simetria par en el intervalo que va desde -pi hasta pi');
+clear f2;
+%% Raices
+%basicamente, como el comando solve no sirve para una funcion a trozos,
+%lo que se ha hecho es un bucle que que mediante el algoritmo de
+%biseccion va sacando las reaices del
+%problema en un bucle. sin embargo, como en el intervalo des de pi hasta 2*pi, son
+%minimos que solo tocan el eje x en un punto, la biseccion no sirve y por
+%lo tanto en esa region he usado el algoritmo de newton ya que que es mas
+%eficaz a la hora de detecter puntos raices singulares por ejemplo, un
+%minimo cuyo vertice esta justo en el eje x
+close all
+syms x real
+%distancia desde la que empieza a buscar
+a=-10.00;    b=a+0.01;  j=0;     i=3;
+z =zeros(48,1); %preasigno espacio del vector para mayor eficiencia
+tol=1.e-5; nmax=100;
+z(2)=-pi;
+aux=nan;
+%variables para las condiciones y asegurar que el metodo de newton no introduzca mas de una vez el mismo número
+canEnter=1;
+piEnter=1;
+steps=abs(a)+8.5;
+bar = waitbar(0,'porfavor, espere');
+for b=b:0.1:8.5
+ % ver si se pulso el boton de salir
+    if getappdata(bar,'canceling')
+        break
+    end   
+j=j+0.1;    
+waitbar(j/steps,bar,sprintf('buscando raices'))
+raiz=soluciones(f,a,b,100);
+%casos especiales
+if pi<a && b<pi*2
+    x_01=(a+b)/2;
+    fun =eq3;
+    fun_n=matlabFunction(fun);
+    fund=diff(fun);
+    fund_n=matlabFunction(fund);
+    raiz=newton(fun_n,fund_n,x_01,tol,nmax); %algoritmo de newton
+if floor(raiz*100/100) == floor(aux*100/100)||raiz>9
+    canEnter=0;
+else
+    aux=raiz;
+    canEnter=1;
+end
+end
+if a>2*pi
+    canEnter=1;
+end
+if isnan(raiz)==0 && canEnter == 1 
+    if fix(raiz*100/100)==fix(pi*100/100)&& piEnter==0
+    else
+       if round(eval(subs(f,raiz)))==0
+        z(i)=raiz;  %introduzco la raiz en el vector
+        i=i+1;
+        end
+    end
+end
+if fix(raiz*100/100)==fix(pi*100/100)
+    piEnter=0;
+end
+%incremento el intervalo
+a=b;
+end
+waitbar(1,bar,sprintf('raices encontradas'))
+delete(bar);
+clear x_01 tol steps raiz piEnter nmax j i fund_n fun_n fun canEnter  b aux a fund;
+%% Grafica de las raices
+bar = waitbar(0,'porfavor, espere'); steps=length(z);
+figure
+fplot(f)
+hold on
+for i =1:length(z)
+     % Check for clicked Cancel button
+    if getappdata(bar,'canceling')
+        break
+    end
+    waitbar(i/steps,bar,sprintf('su grafica se esta pintando'))
+    plot (z(i),subs(f,z(i)),'*')
+    hold on      
+end
+grid on
+hold off
+waitbar(1,bar,sprintf('preparada'))
+delete(bar);
+clear steps i ;
+%% Mostrar las x en las que la funcion vale 0
+disp('////////////////// respuesta //////////////////')
+disp ('raices encontradas: ')
+disp(z) %vector con todas las raices de la funcion
+%% Signo
+%esta  es una funcion que representa graficcamente el signo, pero como
+%tambien nospude servir para la monotonia y la curvatura, la he hecho una
+%funcion de forma que solo variando los valores de entrada pueda
+%reutilizarla
+upAndDown(f,f,z,z,'positivo','negativo',2)
+%% Primera derivada
+%sigue la misma filosofia que el calculo de las raices sin embargo, no
+%presentara las peculiaridades de la funcion normal por lo tanto no será
+%necesario el uso del algoritmo de newton
+close all
+syms x real
+dfun=diff(f);
+a=-10;  b=a+0.01;   k =zeros(50,1); j=0;  steps=abs(a)+15;  i=1;
+bar = waitbar(0,'porfavor, espere');
+for  b=b:0.1:15 
+    %ver si se pulso el boton de salir
+     if getappdata(bar,'canceling')
+        break
+     end
+     j=j+0.1;
+waitbar(j/steps,bar,sprintf('buscando puntos criticos'))
+raiz=soluciones(dfun,a,b,100);
+if isnan(raiz)==0
+    k (i)=raiz;  
+    i=i+1;
+end  
+a=b;
+end
+waitbar(1,bar,sprintf('puntos criticos encontrados'));  disp('//terminado//');
+delete(bar);
+clear j i b a steps raiz ans;
+%% Mostrar puntos criticos
+%esta es otra funcion auxiliar que simplente muestra los puntos criticos de
+%la derivada, sirve tambien para las derivada segunda. 
+critic(f,dfun, k,0,'derivada primera');
+%%
+disp('////////////////// respuesta //////////////////')
+disp ('raices encontradas: ')
+disp(k) %vector con todas las raices de la funcion
+%%  Monotonia
+upAndDown(f,dfun,k,k,'crecimiento','decrecimiento',1)
+%% Segunda derivada
+close all
+syms x real
+dfun2=diff(f,2);
+a=-10;  b=a+0.01;   k2=zeros(52,1);  j=0;  i=1;  steps=abs(a)+8.9;
+bar = waitbar(0,'porfavor, espere');
+for  b=b:0.1:8.9
+      %ver si se pulso el boton de salir
+    if getappdata(bar,'canceling')
+        break
+    end
+j=j+0.1;
+waitbar(j/steps,bar,sprintf('buscando puntos criticos'))
+raiz=soluciones(dfun2,a,b,100);
+if isnan(raiz)==0 
+        k2 (i)=raiz;
+        i=i+1;
+end  
+a=b;
+end
+waitbar(1,bar,sprintf('puntos criticos encontrados'))
+delete(bar);
+clear i j raiz steps b ans a fund;
+%%
+disp('////////////////// respuesta //////////////////')
+disp ('raices encontradas: ')
+disp(k2) %vector con todas las raices de la funcion
+%% Mostrar puntos criticos
+critic(f,dfun2, k2,1,'segunda derivada')
+%% Maximos y minimos
+%aqui se comprobará con los puntos criticos de la primera derivada en la
+%segunda derivada, si estos son maximos o minimos
+bar = waitbar(0,'porfavor, espere');    steps=length(k);    
+subplot(2,1,1)
+fplot(f)
+title('minimos')
+hold on
+subplot(2,1,2)
+fplot(f)
+title('maximos')
+hold on
+for  i= 1: length(k)
+    %ver si se pulso el boton de salir
+    if getappdata(bar,'canceling')
+        break
+    end
+    waitbar(i/steps,bar,sprintf('pintando su grafica'))
+        if subs(dfun2,k(i))>0
+            subplot(2,1,1)
+            plot (k(i),subs(f,k(i)),'*')
+            hold on
+        elseif subs(dfun2,k(i))<0
+            subplot(2,1,2)
+            plot (k(i),subs(f,k(i)),'*')
+            hold on       
+        end
+end
+waitbar(1,bar,sprintf('sugrafica esta preparada'));
+%% Curvatura
+close all
+upAndDown(f,dfun2,k,k2,'convexidad','concavidad',0)
+%% Derivada tercera
+close all
+dfun3=diff(f,3);
+%% Puntos de inflexion
+bar = waitbar(0,'porfavor, espere');   steps=length(k2); 
+fplot(f)
+title('puntos de inflexion')
+hold on
+for i= 1:length(k2)   
+    %ver si se pulso el boton de salir
+    if getappdata(bar,'canceling')
+        break
+    end
+    waitbar(i/steps,bar,sprintf('pintando su grafica'))
+    if round(eval(subs(dfun3,k2(i))))~= 0
+         plot (k2(i),subs(f,k2(i)),'*')
+         hold on
+    end
+end 
+waitbar(1,bar,sprintf('sugrafica esta preparada'));
+delete(bar)
+clear  i ans;
+%% Fin estudio de la funcion
+%% Apartados Extra
+%% Recta tangente en un punto
+%la calculare usando un desarrollo de taylor de orden 1
+close all
+x_0=0.6;
+tang=taylor(f,x,'ExpansionPoint',x_0,'Order',2);
+fplot(f)
+hold on
+fplot(tang)
+legend('f(x)','recta tangente')
+hold off
+clear x_0 tang;
+%% Calculo del area entre la funcion y otra que se decida
+%aqui se muestran solo las 2 curvas juntas
+close all
+a=-10; b=10; % intervalo incial
+V=[a,b];
+g_s= sin(x);% segunda curva simbolica
+figure
+fplot(f,V);
+hold on
+fplot(g_s,V);
+legend('f(x)','g(x)','Location','North');
+title('Calculo de area');
+hold off
+clear a b bar V steps i I;
+%% Para determinar los puntos de interseccion
+% hallamos los puntos de interseccion de las graficas de las dos funciones
+d_s=f-g_s; % diferencia entre curvas: sirve para franjas verticales
+a=-10;  b=a+0.01;    A=zeros(5,1);  j=0;    steps=abs(a)+8.9;  i=1;
+bar = waitbar(0,'porfavor, espere');
+for b=b:0.1:8.9
+  %ver si se pulso el boton de salir
+    if getappdata(bar,'canceling')
+        break
+    end
+    j=j+0.1;
+waitbar(j/steps,bar,sprintf('buscando puntos de interseccion'))    
+raiz=soluciones(d_s,a,b,100);
+if isnan(raiz)==0 
+        A (i)=raiz;
+        i=i+1;
+end
+a=b;
+end
+waitbar(1,bar,sprintf('puntos de interseccion encontrados'))
+delete(bar);
+clear i j bar b a steps S1 S2 I raiz;
+%% Mostrar puntos de interseccion
+critic(f,g_s, A,0,'sen(x)')
+%%
+disp('////////////////// respuesta //////////////////')
+disp ('raices encontradas: ')
+disp(A) %vector con todas las raices de la funcion
+%% Calculo simbolico del area entre las 2 curvas
+S1=A(1);    S2=A(length(A));
+disp('////////////////// respuesta //////////////////')
+integral_indef=simplify(int(d_s)) % integracion indefinida simbolica comando int
+area= abs(double(int(d_s,S1,S2))) % integracion definida simbolica 
+                             %hay que tener en cuenta que la mayor parte de
+                             %lainterseccion entre ambas funciones esta en
+                             %las y negativas
+ clear area integral_indef;
+%% Representacion grafica del area entre las 2 funciones
+close all
+I_S=S1:0.01:S2; % nodos del intervalo de integracion para el calculo 
+%de area
+nodos = [I_S, fliplr(I_S)]; % nodos del mallado y nodos del mallado en orden invertido
+area_colorada = [round(eval(subs(f,I_S)),3), fliplr(round(eval(subs(g_s,I_S)),3))];
+figure
+fplot(f,'color','r')
+hold on
+fplot(g_s,'color','k')
+hold on
+fill(nodos, area_colorada, 'c'); % relleno de color del poligono con 
+legend('f(x)','g(x)','area','location','southeast')
+hold off
+%% Apartado creativo
+%
+%   El apartado consiste en simular mediante matlab, un videoclip de una de
+%mis canciones favoritas do i wanna know de los aric monkeys. en la ventana
+%se ve, un pasillo formaso por la ecuacion sin(x)*sin(20*x) en la cual voy
+%variando el grado y por encima con funciones de seguindo grado, simulo la
+%cara de un cantante en un estilo vaporwave.
+%
+%adicionalmente he añadido la musica para que suene al comienzo de la
+%animacion (pero debido a que no podiamos entregar archivos externos, he comentado todo lo relacionado con la música)
+%
+%%IMORTANTE: los primeros 60 frames, iran mas despacio ya que son los que
+%%se estan grabando, a partir de ahi, ira fluido. por lo tanto tardará un
+%%poquito al principio. pero si una vez esperado. cambias el valor de fps a
+%%1, no tendras que esperar.
+close all
+%%[O, Fs] = audioread('Arctic Monkeys - Do I Wanna Know_ (Official Video) - 128K MP3.mp3');
+%%player = audioplayer(O, Fs);
+%%play(player);
+syms x
+fps=60;  %nº de frames que dura la pelicula
+i=-1; h=4.6; g=0;
+for j= 1:fps
+    n=exp(h);
+    h=h+0.05;
+    g=g-0.5;
+    i=i+1;
+    disp (j)
+    y=sin(x*j)*sin(20*x)*abs(x);
+    fplot(y),axis([-pi pi -5 5]);
+    hold on
+    fplot(-abs(x))
+    hold on
+    fplot(abs(x))
+    hold on
+    fplot(abs((x/100)*n))
+    hold on
+     fplot(-abs((x/100)*n))
+    hold on
+    fplot((x^2)-3,[-5, 5])
+         hold on
+    fplot((x^2)-2,[-5, 5])
+         hold on
+    fplot(sin(i*x)*(x^2)+2,[-5, 5])
+         hold on
+    fplot(sin(i*x)*(x^2)-exp(g),[-5, 5])
+         hold off
+    F(j)=getframe;
+    if g<-2
+        g=0;
+    end
+    if i>10
+        i=-1;
+     end
+     if h>5
+        h=4.6;
+     end
+end
+movie(F,3)
+%% funciones
+function cero= soluciones(fun, a, b,Nmax)
+a2=eval(subs(fun,a));
+b2=eval(subs(fun,b));
+if a2==0
+   cero=a;
+   return
+end
+if b2==0
+   cero=b;
+   return
+end
+if a2*b2>0
+   cero=NaN;
+   return
+end
+cero= (a+b)/2;
+for i=1:Nmax
+    aux=fun(cero);
+    if i >= Nmax
+       break
+    elseif aux==0    
+       break
+    end
+    if aux*a2>0
+       a=cero;
+    else
+       b=cero;
+    end
+    cero= (a+b)/2;
+end
+end
+function [fun,fun2,puntos,puntos2,str1,str2,d] = upAndDown(fun,fun2,puntos,puntos2,str1,str2,d)
+%UPANDDOWN Summary of this function goes here
+%Detailed explanation goes here
+%ya que esta es una parte del codigo que uso mucho, la he decidido poner en
+%una funcio, se usa para mostrar la monotonia, signo y curvatura
+bar = waitbar(0,'porfavor, espere');
+i=1;
+steps=length(puntos)*2;
+ subplot(2,1,1)
+ title(str1)
+ hold on
+ if d==2
+     i=3;
+    subplot(2,1,1)
+    fplot(fun,[-10 puntos(3)])
+    hold on
+    fplot(fun,[9.5 10])
+    hold on
+ end
+for  i=i:length(puntos)-1
+    % Check for clicked Cancel button
+    if getappdata(bar,'canceling')
+        break;
+    end
+    b=i;
+    waitbar(b/steps,bar,sprintf('pintando su grafica'))
+      if   puntos2(i)<puntos2(i+1)
+        if subs(fun2,puntos2(i)+0.01)>0
+           fplot(fun,[puntos2(i) puntos2(i+1)])
+           hold on
+        end
+      end
+end
+i=1;
+ if d==2
+    i=3;
+    subplot(2,1,2)
+    fplot(fun,[puntos(length(puntos)) 8.5])
+    title('negatividad')
+    hold on
+    fplot(0,[-10 puntos(3)])
+    hold on
+ end
+for i=i:length(puntos)-1
+    b=b+1;
+    waitbar(b/steps,bar,sprintf('pintando su grafica'))
+      if puntos2(i)<puntos2(i+1)
+          if d==0 || d==2
+             if eval(subs(fun2,puntos2(i)+0.01))<0
+                subplot(2,1,2)
+                fplot(fun,[puntos2(i) puntos2(i+1)])
+                title(str2)
+                hold on
+             end
+             else
+                if eval(subs(fun2,puntos(i)+0.01))<0
+                    
+                    hold on
+                    if puntos(i+1)< 8.5
+                        subplot(2,2,3)
+                        fplot(fun,[-8 ,puntos2(1)])
+                        hold on
+                        fplot(fun,[puntos(i) puntos(i+1)])
+                        title(str2)
+                        hold on
+                    else
+                        subplot(2,2,4)
+                        fplot(fun,[puntos(i) puntos(i+1)])
+                        title(str2)
+                        hold on  
+                    end
+                end
+           end
+      end
+end
+waitbar(1,bar,sprintf('preparada'))
+delete(bar);
+end
+function [fun,fun2, puntos,d,str1] = critic(fun,fun2, puntos,d,str1)
+%CRITIC Summary of this function goes here
+%   Detailed explanation goes here
+%esta funcion sirve para mostrar una comparativa mostrando los puntos
+%criticos obtenidos de las respectivas derivadas
+subplot (2,1,1)
+fplot(fun2)
+title(str1)
+hold on
+plot (puntos,subs(fun2,puntos),'.','color','k')
+hold off
+subplot (2,1,2)
+fplot(fun,'b')
+title('f(x): ')
+hold on
+legend('f(x)','puntos criticos','location','northwest')
+plot (puntos,subs(fun,puntos),'.','color','r')
+hold off
+end
+
